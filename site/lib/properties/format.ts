@@ -7,6 +7,13 @@ export const formatCurrency = (value: number) =>
     maximumFractionDigits: 0,
   }).format(value);
 
+export const formatArea = (value: number) =>
+  new Intl.NumberFormat("pt-BR", { maximumFractionDigits: 2 }).format(value);
+
+export const plural = (count: number, one: string, many: string) => (count === 1 ? one : many);
+
+export const photoAlt = (title: string, index: number) => `${title} — foto ${index + 1}`;
+
 export function buildWhatsAppUrl(
   property: Pick<Property, "title" | "code">,
   phone: string,

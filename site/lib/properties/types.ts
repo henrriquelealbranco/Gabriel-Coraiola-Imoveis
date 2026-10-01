@@ -26,4 +26,10 @@ export type Property = {
   areaM2: number;
   status: PropertyStatus;
   images: PropertyImage[];
+  /** Ex.: "Nascente", "Norte". Opcional — nem todo anúncio informa. */
+  sunPosition?: string | null;
+  /** Taxa mensal de condomínio, em reais. */
+  condoFee?: number | null;
+  /** Faixa de andares do prédio, ex.: "do 4º ao 6º andar", em vez do andar exato. */
+  floorRange?: string | null;
 };

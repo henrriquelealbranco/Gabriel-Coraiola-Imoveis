@@ -1,14 +1,38 @@
+export const dynamic = "force-dynamic";
+
+import { cache } from "react";
+import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { PropertyView } from "@/app/components/property-view";
-import { findSamplePropertyBySlug, sampleProperties } from "@/lib/properties/sample";
-import { getActivePropertyBySlug } from "@/lib/properties/repository";
+import { findSamplePropertyBySlug } from "@/lib/properties/sample";
+import { getActivePropertyBySlug, listSimilarProperties } from "@/lib/properties/repository";
+import { formatCurrency, plural } from "@/lib/properties/format";
 
-export function generateStaticParams() { return sampleProperties.map(({ slug }) => ({ slug })); }
+const loadProperty = cache(async (slug: string) => {
+  const configured = Boolean(process.env.NEXT_PUBLIC_SUPABASE_URL && process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY);
+  return configured ? getActivePropertyBySlug(slug) : findSamplePropertyBySlug(slug);
+});
+
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
+  const { slug } = await params;
+  const property = await loadProperty(slug);
+  if (!property) return { title: "Imóvel não encontrado · Gabriel Coraiola Imóveis" };
+  const title = `${property.title} · ${property.neighborhood}, ${property.city}`;
+  const description = `${formatCurrency(property.price)} · ${property.bedrooms} ${plural(property.bedrooms, "quarto", "quartos")} · ${property.areaM2} m². ${property.description}`.slice(0, 160);
+  const cover = property.images[0]?.url;
+  return {
+    title: `${title} · Gabriel Coraiola Imóveis`,
+    description,
+    alternates: { canonical: `/imovel/${property.slug}` },
+    openGraph: { type: "website", locale: "pt_BR", title, description, images: cover ? [{ url: cover }] : undefined },
+  };
+}
 
 export default async function PropertyPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  const configured = Boolean(process.env.NEXT_PUBLIC_SUPABASE_URL && process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY);
-  const property = configured ? await getActivePropertyBySlug(slug) : findSamplePropertyBySlug(slug);
+  const property = await loadProperty(slug);
   if (!property) notFound();
-  return <PropertyView property={property} phone={process.env.NEXT_PUBLIC_WHATSAPP_PHONE || "5541999999999"} />;
+  const configured = Boolean(process.env.NEXT_PUBLIC_SUPABASE_URL && process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY);
+  const similarProperties = configured ? await listSimilarProperties(property) : [];
+  return <PropertyView property={property} phone={process.env.NEXT_PUBLIC_WHATSAPP_PHONE || "5541992382865"} similarProperties={similarProperties} />;
 }

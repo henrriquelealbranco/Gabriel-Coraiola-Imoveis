@@ -23,6 +23,6 @@ describe("página pública do imóvel", () => {
     expect(images[0]).toHaveAttribute("fetchpriority", "high");
     expect(images[1]).toHaveAttribute("loading", "lazy");
     expect(screen.getByText(/760\.000/)).toBeInTheDocument();
-    expect(screen.getAllByRole("link", { name: /agendar uma visita/i })[0].getAttribute("href")).toContain("Apartamento%20ensolarado%20no%20Batel%2FGC-002");
+    expect(screen.getAllByRole("link", { name: /clique aqui para receber mais informações/i })[0].getAttribute("href")).toContain("Apartamento%20ensolarado%20no%20Batel%2FGC-002");
   });
 });

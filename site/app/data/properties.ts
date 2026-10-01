@@ -28,5 +28,6 @@ export const whatsappUrl = (propertyTitle?: string) => {
   const message = propertyTitle
     ? `Olá, Gabriel! Gostaria de saber mais sobre o imóvel: ${propertyTitle}.`
     : "Olá, Gabriel! Gostaria de encontrar um imóvel.";
-  return `https://wa.me/5541999999999?text=${encodeURIComponent(message)}`;
+  const phone = process.env.NEXT_PUBLIC_WHATSAPP_PHONE || "5541992382865";
+  return `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
 };
