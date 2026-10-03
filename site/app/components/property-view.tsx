@@ -26,10 +26,14 @@ export function PropertyView({ property, phone, similarProperties = [] }: { prop
           <Fact icon={<BedDouble />} value={property.bedrooms} label={plural(property.bedrooms, "quarto", "quartos")} />
           <Fact icon={<Bath />} value={property.bathrooms} label={plural(property.bathrooms, "banheiro", "banheiros")} />
           <Fact icon={<CarFront />} value={property.parkingSpaces} label={plural(property.parkingSpaces, "vaga", "vagas")} />
-          {property.sunPosition && <Fact icon={<Compass />} value={property.sunPosition} label="posição solar" />}
-          {property.condoFee != null && <Fact icon={<Wallet />} value={formatCurrency(property.condoFee)} label="condomínio" />}
-          {property.floorRange && <Fact icon={<Building2 />} value={property.floorRange} label="andar" />}
         </dl>
+        {(property.sunPosition || property.condoFee != null || property.floorRange) && (
+          <dl className="conversion-facts conversion-facts-secondary">
+            {property.sunPosition && <Fact icon={<Compass />} value={property.sunPosition} label="posição solar" />}
+            {property.condoFee != null && <Fact icon={<Wallet />} value={formatCurrency(property.condoFee)} label="condomínio" />}
+            {property.floorRange && <Fact icon={<Building2 />} value={property.floorRange} label="faixa de andares" />}
+          </dl>
+        )}
         <section className="conversion-description"><p className="eyebrow">Sobre o imóvel</p><h2>Detalhes que fazem diferença</h2><p>{property.description}</p></section>
       </article>
       <aside className="conversion-contact"><WhatsAppCta property={property} phone={phone} /></aside>
