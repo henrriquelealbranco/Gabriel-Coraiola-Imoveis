@@ -8,8 +8,10 @@ import { findSamplePropertyBySlug } from "@/lib/properties/sample";
 import { getActivePropertyBySlug, listSimilarProperties } from "@/lib/properties/repository";
 import { formatCurrency, plural } from "@/lib/properties/format";
 
+import { SUPABASE_URL } from "@/lib/supabase/config";
+
 const loadProperty = cache(async (slug: string) => {
-  const configured = Boolean(process.env.NEXT_PUBLIC_SUPABASE_URL && process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY);
+  const configured = Boolean(SUPABASE_URL);
   return configured ? getActivePropertyBySlug(slug) : findSamplePropertyBySlug(slug);
 });
 
@@ -32,7 +34,7 @@ export default async function PropertyPage({ params }: { params: Promise<{ slug:
   const { slug } = await params;
   const property = await loadProperty(slug);
   if (!property) notFound();
-  const configured = Boolean(process.env.NEXT_PUBLIC_SUPABASE_URL && process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY);
+  const configured = Boolean(SUPABASE_URL);
   const similarProperties = configured ? await listSimilarProperties(property) : [];
   return <PropertyView property={property} phone={process.env.NEXT_PUBLIC_WHATSAPP_PHONE || "5541992382865"} similarProperties={similarProperties} />;
 }

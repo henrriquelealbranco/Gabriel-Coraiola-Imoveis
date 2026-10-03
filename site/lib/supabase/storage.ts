@@ -1,12 +1,9 @@
 import "server-only";
-
-// O cliente de Storage do supabase-js decodifica a chave como JWT e rejeita o
-// formato novo (sb_secret_…) com "Invalid Compact JWS". A API REST aceita, então
-// falamos com ela diretamente.
+import { SUPABASE_URL, SUPABASE_SERVICE_KEY } from "./config";
 
 function config() {
-  const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
-  const key = process.env.SUPABASE_SERVICE_ROLE_KEY;
+  const url = SUPABASE_URL;
+  const key = SUPABASE_SERVICE_KEY;
   if (!url || !key) throw new Error("Credenciais administrativas do Supabase não configuradas.");
   return { url: url.replace(/\/+$/, ""), key };
 }
