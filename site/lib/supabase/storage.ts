@@ -1,5 +1,6 @@
 import "server-only";
-import { SUPABASE_URL, SUPABASE_SERVICE_KEY } from "./config";
+import { SUPABASE_URL } from "./config";
+import { SUPABASE_SERVICE_KEY } from "./admin-key";
 
 function config() {
   const url = SUPABASE_URL;

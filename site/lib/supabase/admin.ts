@@ -1,6 +1,7 @@
 import "server-only";
 import { createClient } from "@supabase/supabase-js";
-import { SUPABASE_URL, SUPABASE_SERVICE_KEY } from "./config";
+import { SUPABASE_URL } from "./config";
+import { SUPABASE_SERVICE_KEY } from "./admin-key";
 
 export function createAdminClient() {
   const url = SUPABASE_URL;
