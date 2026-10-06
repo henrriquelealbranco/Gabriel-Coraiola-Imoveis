@@ -5,7 +5,7 @@ import "./globals.css";
 const description = "Imóveis selecionados em Curitiba e região, com atendimento próximo e negociação transparente.";
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://gabriel-coraiola-imoveis.gabriel-coraiola.workers.dev"),
+  metadataBase: new URL("https://gabrielcoraiolaimoveis.com.br"),
   title: "Gabriel Coraiola Imóveis · Curitiba e região",
   description,
   openGraph: {
